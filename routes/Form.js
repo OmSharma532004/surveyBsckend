@@ -12,7 +12,9 @@ const {
     getFormDetailsByName,
     getInputsByIds,
  
-    getResponseById
+    getResponseById,
+    handleDeleteForm,
+    getFormById
 
   } = require("../controller/Form")
 
@@ -33,6 +35,7 @@ router.get("/FormDetail", getResponsesByFormId)
 router.get("/getInputDetails", getInputsByIds)
 router.get("/getResponseDetails", getResponseById)
 
-
+router.delete("/deleteForm", handleDeleteForm);
+router.get("/formById",getFormById);
 
   module.exports = router
