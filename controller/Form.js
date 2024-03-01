@@ -117,6 +117,13 @@ exports.createForm = async (req, res) => {
                 message: "All fields are required for creating a form.",
             });
         }
+        const FormExists = await Form.findOne({ title, user});
+        if(FormExists){
+            return res.status(400).json({
+                success: false,
+                message: "Form already exists",
+            });
+        }
 
         const newForm = await Form.create({
             user,
@@ -228,6 +235,22 @@ exports.getFormDetailsByName = async (req, res) => {
   }
 };
 
+exports.handleDeleteForm = async (req, res) => {
+  const { formId } = req.query;
+  const form = await Form.findByIdAndDelete(formId);
+  if (!form) {
+    return res.status(404).json({
+      success: false,
+      message: "Form not found",
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    message: "Form deleted successfully",
+  });
+
+}
+
 
 
   
@@ -329,10 +352,6 @@ exports.getFormDetailsByName = async (req, res) => {
     }
   };
   
-  
-  
-
-
 
   exports.getResponseById = async (req, res) => {
     try {
@@ -363,3 +382,25 @@ exports.getFormDetailsByName = async (req, res) => {
     }
   };
   
+  exports.getFormById=async(req,res)=>{
+    const formId = req.query.formId;
+    try {
+      const form = await Form.findById(formId) .populate("input")
+      .populate("response")
+      .exec();
+
+  
+      if (!form) {
+        throw new Error("Form not found");
+      }
+  
+      return  res.status(200).json({
+        success: true,
+        form: form,
+        message: "Form details retrieved successfully",
+      });
+    } catch (error) {
+      console.error(error);
+      throw new Error("Failed to retrieve form details");
+    }
+  }
