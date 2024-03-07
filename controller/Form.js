@@ -56,7 +56,7 @@ exports.addResponseToForm = async (req, res) => {
 exports.addInputToForm = async (req, res) => {
     try {
         
-        const { formId, field, type,userId} = req.body;
+        const { formId, field, type,userId,options} = req.body;
 
         // Check if all required fields are provided
         if (!formId || !field  || !userId|| !type) {
@@ -71,6 +71,7 @@ exports.addInputToForm = async (req, res) => {
             type,
             User: userId,
             Form: formId,
+            options: options,
         });
 
         // Find the form and push the new input
