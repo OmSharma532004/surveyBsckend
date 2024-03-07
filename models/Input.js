@@ -23,6 +23,10 @@ const inputSchema=new mongoose.Schema(
             required: true,
             ref: "Form",
         },
+        options: {
+            type: Array,
+            required: false,
+        },
     }
 )
 
